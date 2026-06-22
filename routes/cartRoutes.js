@@ -4,11 +4,12 @@ const router = express.Router();
 const {
   addToCart,
   getCart,
-  removeFromCart
 } = require("../controllers/cartController");
 
-router.post("/add", addToCart);
-router.get("/", getCart);
-router.delete("/:id", removeFromCart);
+const { protect } = require("../middleware/authMiddleware");
+
+router.post("/add", protect, addToCart);
+
+router.get("/", protect, getCart);
 
 module.exports = router;

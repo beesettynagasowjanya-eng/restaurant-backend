@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
-  // 👇 ADD THIS
   role: {
     type: String,
     enum: ["user", "admin"],
@@ -25,4 +24,4 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

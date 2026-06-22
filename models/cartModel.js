@@ -1,15 +1,27 @@
 const mongoose = require("mongoose");
 
-const cartSchema = new mongoose.Schema({
+const cartItemSchema = new mongoose.Schema({
   menuId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Menu",
-    required: true
   },
   quantity: {
     type: Number,
-    default: 1
-  }
-}, { timestamps: true });
+    default: 1,
+  },
+});
 
-module.exports = mongoose.model("Cart", cartSchema);
+const cartSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    items: [cartItemSchema],
+  },
+  { timestamps: true }
+);
+
+// 👇 IMPORTANT FIX (prevents overwrite error)
+module.exports = mongoose.models.Cart || mongoose.model("Cart", cartSchema);

@@ -1,24 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
+const { protect } = require("../middleware/authMiddleware");
+const isAdmin = require("../middleware/adminMiddleware");
+
 const {
   addMenuItem,
-  getMenuItems,
-  getMenuItemById,
+  getMenu,
   updateMenuItem,
   deleteMenuItem,
 } = require("../controllers/menuController");
 
-const protect = require("../middleware/authMiddleware");
+router.get("/", getMenu);
 
-router.post("/", protect, addMenuItem);
+router.post("/", protect, isAdmin, addMenuItem);
 
-router.get("/", getMenuItems);
+router.put("/:id", protect, isAdmin, updateMenuItem);
 
-router.get("/:id", getMenuItemById);
-
-router.put("/:id", protect, updateMenuItem);
-
-router.delete("/:id", protect, deleteMenuItem);
+router.delete("/:id", protect, isAdmin, deleteMenuItem);
 
 module.exports = router;
